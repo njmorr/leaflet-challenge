@@ -30,9 +30,9 @@ function depthColor (depth) {
     case depth > 50:
       return "#ee9b4e";
     case depth > 25:
-      return "#eede4e"
+      return "#eede4e";
     default:
-      return "#73ee4e"
+      return "#73ee4e";
   }
 }
 
@@ -49,8 +49,8 @@ d3.json(geoData).then(function(data) {
         color: "white",
         fillColor: depthColor(feature.geometry.coordinates[2]),
         fillOpacity: 0.5,
-      }
+      };
     }
-  })
+  }).addTo(myMap);
 
 });
