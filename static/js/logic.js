@@ -16,6 +16,18 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
   accessToken: API_KEY
 }).addTo(myMap);
 
+// Load in geojson data
+var geoData = "static/data/earthquakes.geojson";
+
+var geojson;
+
+d3.json(geoData).then(function(data) {
+
+  L.geoJson(data)
+    console.log(data.features[1]);
+    console.log(data.features[1].geometry.coordinates[0]);
+
+});
 
 
 // var darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
