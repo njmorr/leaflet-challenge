@@ -36,7 +36,7 @@ function depthColor (depth) {
   }
 }
 
-
+// maybe use L.circleMarker(data){blah blah blah}
 
 d3.json(geoData).then(function(data) {
 
@@ -47,7 +47,7 @@ d3.json(geoData).then(function(data) {
     style: function(feature) {
       return{
         color: "white",
-        fillColor: depthColor(feature.geometry.coordinates[2]),
+        fillColor: depthColor(feature.features.geometry.coordinates[2]),
         fillOpacity: 0.5,
       };
     }
