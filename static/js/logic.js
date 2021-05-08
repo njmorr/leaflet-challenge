@@ -2,8 +2,9 @@ console.log("logic.js is loaded!");
 
 // Creating map object
 var myMap = L.map("mapid", {
-    center: [34.0522, -118.2437],
-    zoom: 8
+    // center: [34.0522, -118.2437],
+    center: [0,-80],
+    zoom: 2
   });
 
 // Streetmap Layer
@@ -21,37 +22,35 @@ var geoData = "static/data/earthquakes.geojson";
 
 var geojson;
 
+// create a function for the marker color based on depth of earthquake
+function depthColor (depth) {
+  switch (depth) {
+    case depth > 75:
+      return "#ee4e4e";
+    case depth > 50:
+      return "#ee9b4e";
+    case depth > 25:
+      return "#eede4e"
+    default:
+      return "#73ee4e"
+  }
+}
+
+
+
 d3.json(geoData).then(function(data) {
 
-  L.geoJson(data)
-    console.log(data.features[1]);
-    console.log(data.features[1].geometry.coordinates[0]);
+  L.geoJson(data, {
+    // console.log(data.features[1]);
+    // console.log(data.features[1].geometry.coordinates[0]);
+
+    style: function(feature) {
+      return{
+        color: "white",
+        fillColor: depthColor(feature.geometry.coordinates[2]),
+        fillOpacity: 0.5,
+      }
+    }
+  })
 
 });
-
-
-// var darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-//   attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-//   maxZoom: 18,
-//   id: "dark-v10",
-//   accessToken: API_KEY
-// });
-
-
-// // Create a baseMaps object to contain the streetmap and darkmap
-// var baseMaps = {
-//     "Street Map": streetmap,
-//     "Dark Map": darkmap
-//   };
-
-// // Modify the map so that it will have the streetmap, states, and cities layers
-// var myMap = L.map("mapid", {
-//     center: [37.09, -95.71],
-//     zoom: 5,
-//     layers: [streetmap] //, states, cities]
-//   });myMap
-
-//   // Create a layer control, containing our baseMaps and overlayMaps, and add them to the map
-// L.control.layers(baseMaps, {  //, overlayMaps, {
-//     collapsed: false
-//   }).addTo(myMap);
