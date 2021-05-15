@@ -20,7 +20,7 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 // Load in geojson data
 var geoData = "static/data/earthquakes.geojson";
 
-var geojson;
+// var geojson;
 
 // create a function for the marker color based on depth of earthquake
 function depthColor (depth) {
@@ -34,25 +34,58 @@ function depthColor (depth) {
     default:
       return "#73ee4e";
   }
-}
+};
 
-// maybe use L.circleMarker(data){blah blah blah}
-
-var markerOptions = {
-  radius: 8,
-  fillColor: "lightgreen",
-  color: "black",
-  weight: 1,
-  opacity: 1,
-  fillOpacity: 0.8
-}
+function radiusSize (mag) {
+  switch (mag) {
+    case mag > 6.5:
+      return 17;
+    case mag > 6:
+      return 14;
+    case mag > 5.5:
+      return 11;
+    case mag > 5.0:
+      return 8;
+    default:
+      return 5;
+  }
+};
 
 d3.json(geoData).then(function(data) {
+  
+  
+  console.log(data)
+
+  for (var i = 0; i < data.features.length; i++) {
+    var depthValue = data.features[i].geometry.coordinates[2];
+    var magnitude = data.features[i].properties.mag; 
+    
+    // console.log(`depth: ${depthValue}`);
+    // console.log(`mag: ${magnitude}`);
+  };
+ 
 
   L.geoJson(data, {
   
+    style: function(feature) {
+      return{
+        fillColor: depthColor(feature.geometry.coordinates[2])  // should be a function
+      };
+    },
+
     pointToLayer: function (feature, latlng) {
-      return L.circleMarker(latlng, markerOptions);
+      return L.circleMarker(latlng, {
+        radius: radiusSize(feature.properties.mag), // should be a function
+        color: "black",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.5
+      });
+
+    },
+
+    onEachFeature: function (feature, layer) {
+      layer.bindPopup(`Magnitude: ${feature.properties.mag} and Depth is ${feature.geometry.coordinates[2]}`);
     }
 
   }).addTo(myMap);
