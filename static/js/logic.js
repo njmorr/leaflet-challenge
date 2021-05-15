@@ -2,8 +2,8 @@ console.log("logic.js is loaded!");
 
 // Creating map object
 var myMap = L.map("mapid", {
-    // center: [34.0522, -118.2437],
-    center: [0,-80],
+    // center: [0, 166],
+    center: [0,-0],
     zoom: 2
   });
 
@@ -38,19 +38,32 @@ function depthColor (depth) {
 
 // maybe use L.circleMarker(data){blah blah blah}
 
+var markerOptions = {
+  radius: 8,
+  fillColor: "lightgreen",
+  color: "black",
+  weight: 1,
+  opacity: 1,
+  fillOpacity: 0.8
+}
+
 d3.json(geoData).then(function(data) {
 
   L.geoJson(data, {
-    // console.log(data.features[1]);
-    // console.log(data.features[1].geometry.coordinates[0]);
-
-    style: function(feature) {
-      return{
-        color: "white",
-        fillColor: depthColor(feature.features.geometry.coordinates[2]),
-        fillOpacity: 0.5,
-      };
+  
+    pointToLayer: function (feature, latlng) {
+      return L.circleMarker(latlng, markerOptions);
     }
+
   }).addTo(myMap);
 
 });
+
+
+  
+
+
+
+
+
+
