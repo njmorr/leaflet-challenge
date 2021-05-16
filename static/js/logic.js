@@ -19,7 +19,8 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 
 
 // Load in geojson data
-var geoData = "static/data/earthquakes.geojson";
+// var geoData = "static/data/earthquakes.geojson";
+var geoData = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson"
 
 d3.json(geoData).then(function (data) {
 
