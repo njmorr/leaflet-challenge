@@ -85,7 +85,7 @@ d3.json(geoData).then(function(data) {
       },
 
       onEachFeature: function (feature, layer) {
-        layer.bindPopup(`Magnitude: ${feature.properties.mag} and Depth is ${feature.geometry.coordinates[2]}`);
+        layer.bindPopup(`Earthquake occured near ${feature.properties.place} with a magnitude of ${feature.properties.mag} and depth of ${feature.geometry.coordinates[2]}km.`);
       }
 
     }).addTo(myMap);
