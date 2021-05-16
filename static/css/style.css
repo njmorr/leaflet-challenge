@@ -10,6 +10,13 @@ html {
   /* color: #ee4e4e */
 }
 
+.legend {
+  line-height: 18px;
+  color: #001219;
+  background-color: #ebebeb;
+  padding: 5px;
+}
+
 .legend i {
   width: 18px;
   height: 18px;
