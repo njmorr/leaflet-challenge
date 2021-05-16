@@ -20,13 +20,11 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 // Load in geojson data
 var geoData = "static/data/earthquakes.geojson";
 
-// var geojson;
-
 d3.json(geoData).then(function (data) {
 
-  // console.log(data)
+  console.log(data)
 
-  var markerArray = []
+  // var markerArray = []
 
   for (var i = 0; i < data.features.length; i++) {
     var depthValue = data.features[i].geometry.coordinates[2];
@@ -35,107 +33,48 @@ d3.json(geoData).then(function (data) {
     console.log(`depth: ${depthValue} with a type of ${typeof (depthValue)}`);
     console.log(`mag: ${magnitude} with a type of ${typeof (magnitude)}`);
 
-    var markerDescription = {
-      radius: radiusSize(magnitude), // should be a function
-      color: "black",
-      weight: 0.5,
-      opacity: 1,
-      fillColor: depthColor(depthValue),
-      fillOpacity: 0.5
-    };
-
-    markerArray.push(markerDescription);
+    // var markerDescription = {
+    //   radius: radiusSize(magnitude), // should be a function
+    //   color: "black",
+    //   weight: 0.5,
+    //   opacity: 1,
+    //   fillColor: depthColor(depthValue),
+    //   fillOpacity: 0.5
+    // };
+    // markerArray.push(markerDescription);
   };
 
-  console.log(markerArray);
+  // console.log(markerArray);
 
-  // L.geoJson(data, {
-  //   style: function (feature) {
-  //     return {
-  //       // fillColor: depthColor(feature.geometry.coordinates[2])  // should be a function
-  //       fillColor: depthColor(depthValue)  // should be a function
-  //     };
-  //   },
+  L.geoJson(data, {
+    style: function (feature) {
+      return {
+        fillColor: depthColor(feature.geometry.coordinates[2])  // should be a function
+        // fillColor: depthColor(depthValue)  // should be a function
+      };
+    },
 
-  //   pointToLayer: function (feature, latlng) {
-  //     return L.circleMarker(latlng, {
-  //       // radius: radiusSize(feature.properties.mag), // should be a function
-  //       radius: radiusSize(magnitude), // should be a function
-  //       color: "black",
-  //       weight: 0.5,
-  //       opacity: 1,
-  //       fillOpacity: 0.5
-  //     });
+    pointToLayer: function (feature, latlng) {
+      return L.circleMarker(latlng, {
+        radius: radiusSize(feature.properties.mag), // should be a function
+        // radius: radiusSize(magnitude), // should be a function
+        color: "white",
+        weight: 0.5,
+        opacity: 1,
+        fillOpacity: 0.75
+      });
 
-  //   },
+    },
 
-  //   onEachFeature: function (feature, layer) {
-  //     layer.bindPopup(`Earthquake occured near ${feature.properties.place} with a magnitude of ${feature.properties.mag} and depth of ${feature.geometry.coordinates[2]}km.`);
-  //   }
+    onEachFeature: function (feature, layer) {
+      layer.bindPopup(`Earthquake occured near ${feature.properties.place} with a magnitude of ${feature.properties.mag} and depth of ${feature.geometry.coordinates[2]}km.`);
+    }
 
-  // }).addTo(myMap);
+  }).addTo(myMap);
 
 
 });
 
-// d3.json(geoData).then(function (data) {
-
-//   console.log(data)
-
-//   for (var i = 0; i < data.features.length; i++) {
-//     var depthValue = data.features[i].geometry.coordinates[2];
-//     var magnitude = data.features[i].properties.mag; 
-
-//     console.log(`depth: ${depthValue} with a type of ${typeof(depthValue)}`);
-//     console.log(`mag: ${magnitude} with a type of ${typeof(magnitude)}`);
-
-//     var geodatas = L.geoJson(data, {
-
-//       style: function(feature) {
-//         return{
-//           // fillColor: depthColor(feature.geometry.coordinates[2])  // should be a function
-//           fillColor: depthColor(depthValue)  // should be a function
-//         };
-//       },
-
-//       pointToLayer: function (feature, latlng) {
-//         return L.circleMarker(latlng, {
-//           // radius: radiusSize(feature.properties.mag), // should be a function
-//           radius: radiusSize(magnitude), // should be a function
-//           color: "black",
-//           weight: 0.5,
-//           opacity: 1,
-//           fillOpacity: 0.5
-//         });
-
-//       },
-
-//       onEachFeature: function (feature, layer) {
-//         layer.bindPopup(`Earthquake occured near ${feature.properties.place} with a magnitude of ${feature.properties.mag} and depth of ${feature.geometry.coordinates[2]}km.`);
-//       }
-
-//     }).addTo(myMap);
-
-//     console.log(geodatas)
-
-//   };
-
-// });
-
-// create a function for the marker color based on depth of earthquake
-// function depthColor(depth) {
-//   switch (depth) {
-//     case depth > 75:
-//       return "#ee4e4e";
-//     case depth > 50:
-//       return "#ee9b4e";
-//     case depth > 25:
-//       return "#eede4e";
-//     default:
-//       // return "#73ee4e";
-//       return "pink";
-//   }
-// };
 
 function depthColor(depth) {
   if (depth > 75) {
