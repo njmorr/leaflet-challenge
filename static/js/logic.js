@@ -63,7 +63,7 @@ d3.json(geoData).then(function(data) {
     // console.log(`depth: ${depthValue}`);
     // console.log(`mag: ${magnitude}`);
   
-     L.geoJson(data, {
+    L.geoJson(data, {
     
       style: function(feature) {
         return{
@@ -74,7 +74,7 @@ d3.json(geoData).then(function(data) {
 
       pointToLayer: function (feature, latlng) {
         return L.circleMarker(latlng, {
-          radius: radiusSize(feature.properties.mag), // should be a function
+          // radius: radiusSize(feature.properties.mag), // should be a function
           radius: radiusSize(magnitude), // should be a function
           color: "black",
           weight: 0.5,
@@ -89,7 +89,9 @@ d3.json(geoData).then(function(data) {
       }
 
     }).addTo(myMap);
+
   };
+
 });
 
 
