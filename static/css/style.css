@@ -9,4 +9,12 @@ html {
   height: 100%;
   /* color: #ee4e4e */
 }
- 
+
+.legend i {
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin-right: 8px;
+  opacity: 0.8;
+  color: "white";
+}

@@ -17,6 +17,7 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
   accessToken: API_KEY
 }).addTo(myMap);
 
+
 // Load in geojson data
 var geoData = "static/data/earthquakes.geojson";
 
@@ -24,45 +25,23 @@ d3.json(geoData).then(function (data) {
 
   console.log(data)
 
-  // var markerArray = []
-
-  for (var i = 0; i < data.features.length; i++) {
-    var depthValue = data.features[i].geometry.coordinates[2];
-    var magnitude = data.features[i].properties.mag;
-
-    console.log(`depth: ${depthValue} with a type of ${typeof (depthValue)}`);
-    console.log(`mag: ${magnitude} with a type of ${typeof (magnitude)}`);
-
-    // var markerDescription = {
-    //   radius: radiusSize(magnitude), // should be a function
-    //   color: "black",
-    //   weight: 0.5,
-    //   opacity: 1,
-    //   fillColor: depthColor(depthValue),
-    //   fillOpacity: 0.5
-    // };
-    // markerArray.push(markerDescription);
-  };
-
-  // console.log(markerArray);
-
   L.geoJson(data, {
     style: function (feature) {
       return {
         fillColor: depthColor(feature.geometry.coordinates[2])  // should be a function
-        // fillColor: depthColor(depthValue)  // should be a function
       };
     },
 
     pointToLayer: function (feature, latlng) {
       return L.circleMarker(latlng, {
         radius: radiusSize(feature.properties.mag), // should be a function
-        // radius: radiusSize(magnitude), // should be a function
         color: "white",
         weight: 0.5,
         opacity: 1,
         fillOpacity: 0.75
       });
+      // https://leafletjs.com/examples/geojson/
+      // Accessedd 16 May 2021
 
     },
 
@@ -71,6 +50,25 @@ d3.json(geoData).then(function (data) {
     }
 
   }).addTo(myMap);
+
+  var legend = L.control({ position: 'bottomright' });
+  
+  legend.onAdd = function (blah) {
+    var div = L.DomUtil.create('div', 'info legend'),
+      earthquakeDepth = [0, 25, 50, 75],
+      labels = colors;
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < earthquakeDepth.length; i++) {
+      div.innerHTML +=
+        '<i style="background:' + getColor(earthquakeDepth[i] + 1) + '"></i> ' 
+        + `${earthquakeDepth[i]}km` + (earthquakeDepth[i + 1] ? '&ndash;' + `${earthquakeDepth[i + 1]}km` + '<br>' : '+');
+    }
+
+    return div;
+  };
+
+  legend.addTo(myMap);
 
 
 });
@@ -101,9 +99,18 @@ function radiusSize(mag) {
   } else {
     return 5;
   }
- 
+
 };
 
+var colors = ["#ee4e4e", "#ee9b4e", "#eede4e", "#73ee4e"]
+
+function getColor(d) {
+  // console.log(`getColor: ${d}`);
+  return d > 75 ? colors[0] :
+    d > 50 ? colors[1] :
+      d > 25 ? colors[2] :
+        colors[3]
+}
 
 
 
