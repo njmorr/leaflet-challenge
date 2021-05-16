@@ -62,34 +62,34 @@ d3.json(geoData).then(function(data) {
     
     // console.log(`depth: ${depthValue}`);
     // console.log(`mag: ${magnitude}`);
-  };
- 
-
-  L.geoJson(data, {
   
-    style: function(feature) {
-      return{
-        fillColor: depthColor(feature.geometry.coordinates[2])  // should be a function
-      };
-    },
+     L.geoJson(data, {
+    
+      style: function(feature) {
+        return{
+          // fillColor: depthColor(feature.geometry.coordinates[2])  // should be a function
+          fillColor: depthColor(depthValue)  // should be a function
+        };
+      },
 
-    pointToLayer: function (feature, latlng) {
-      return L.circleMarker(latlng, {
-        radius: radiusSize(feature.properties.mag), // should be a function
-        color: "black",
-        weight: 1,
-        opacity: 1,
-        fillOpacity: 0.5
-      });
+      pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, {
+          radius: radiusSize(feature.properties.mag), // should be a function
+          radius: radiusSize(magnitude), // should be a function
+          color: "black",
+          weight: 0.5,
+          opacity: 1,
+          fillOpacity: 0.5
+        });
 
-    },
+      },
 
-    onEachFeature: function (feature, layer) {
-      layer.bindPopup(`Magnitude: ${feature.properties.mag} and Depth is ${feature.geometry.coordinates[2]}`);
-    }
+      onEachFeature: function (feature, layer) {
+        layer.bindPopup(`Magnitude: ${feature.properties.mag} and Depth is ${feature.geometry.coordinates[2]}`);
+      }
 
-  }).addTo(myMap);
-
+    }).addTo(myMap);
+  };
 });
 
 
