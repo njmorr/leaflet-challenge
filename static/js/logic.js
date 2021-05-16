@@ -123,17 +123,29 @@ d3.json(geoData).then(function (data) {
 // });
 
 // create a function for the marker color based on depth of earthquake
+// function depthColor(depth) {
+//   switch (depth) {
+//     case depth > 75:
+//       return "#ee4e4e";
+//     case depth > 50:
+//       return "#ee9b4e";
+//     case depth > 25:
+//       return "#eede4e";
+//     default:
+//       // return "#73ee4e";
+//       return "pink";
+//   }
+// };
+
 function depthColor(depth) {
-  switch (depth) {
-    case depth > 75:
-      return "#ee4e4e";
-    case depth > 50:
-      return "#ee9b4e";
-    case depth > 25:
-      return "#eede4e";
-    default:
-      // return "#73ee4e";
-      return "pink";
+  if (depth > 75) {
+    return "#ee4e4e";
+  } else if (depth > 50) {
+    return "#ee9b4e";
+  } else if (depth > 25) {
+    return "#eede4e";
+  } else {
+    return "#73ee4e";
   }
 };
 
